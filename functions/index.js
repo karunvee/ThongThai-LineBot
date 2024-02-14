@@ -22,7 +22,7 @@ const data_tester = {
     reporter: "87778, John Sintsom",
     taskId: "taskId1233"
 };
-// 🚨⚠️🛑
+// 🚨⚠️🛑 🟥 🟧 🟨 🟩 🟦 ⬜ ⬛
 
 exports.LineBot = functions.https.onRequest(async (req, res) => {
     if (req.method === "POST") {
@@ -35,11 +35,11 @@ exports.LineBot = functions.https.onRequest(async (req, res) => {
                 {
                     type: "flex",
                     // eslint-disable-next-line camelcase
-                    altText: `⚠️🚨⚠️ ${req.body.events[0].data.topic} ⚠️🚨⚠️`,
+                    altText: `🚨 ${req.body.events[0].data.topic} 🚨`,
                     contents: template.msgAlert(req.body.events[0].data)
                 }
             );
-            res.status(200).send("ACCESS_POINT");
+            res.status(200).send({status: "success", detail: "Sending a message via the data from the access point successfully."});
         } else {
             const events = req.body.events;
 
@@ -60,6 +60,15 @@ exports.LineBot = functions.https.onRequest(async (req, res) => {
                                     // eslint-disable-next-line camelcase
                                     altText: `🚨 ${data_tester.topic} 🚨`,
                                     contents: template.msgAlert(data_tester)
+                                }
+                            );
+                        } else if (event.message.text === "Menu") {
+                            await reply(
+                                event.replyToken,
+                                {
+                                    type: "flex",
+                                    altText: "Menu",
+                                    contents: template.msgMenu()
                                 }
                             );
                         }
