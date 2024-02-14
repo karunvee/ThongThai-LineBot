@@ -18,7 +18,7 @@ deploy **
 cd to functions/
 >>firebase deploy --only functions
 
-
+>>firebase emulators:start
 
 Example payload **
 {
